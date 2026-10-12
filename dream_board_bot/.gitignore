@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+.venv/
+
+# Environment Variables
+.env
+
+# SQLite Database
+*.db
+*.sqlite3
+dream_board.db
+
+# Logs
+*.log
+bot.log
+
+# Temporary / Generated Media
+temp_images/
+downloads/
+generated/
+
+# OS specific
+.DS_Store
+Thumbs.db
