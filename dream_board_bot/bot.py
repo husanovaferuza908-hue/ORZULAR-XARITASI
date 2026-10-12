@@ -14,6 +14,8 @@ if hasattr(sys.stdout, "reconfigure"):
 if hasattr(sys.stderr, "reconfigure"):
     sys.stderr.reconfigure(encoding="utf-8")
 
+import os
+from aiohttp import web
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
@@ -53,6 +55,28 @@ def print_banner():
 ============================================================
 """
     print(banner)
+
+
+async def handle_health_check(request: web.Request) -> web.Response:
+    """Render.com uchun HTTP Health Check javobi."""
+    return web.json_response({
+        "status": "online",
+        "service": "Orzular Xaritasi AI Bot",
+        "version": "1.0.0",
+    })
+
+
+async def run_http_server() -> None:
+    """Render Web Service talabi bo'yicha HTTP serverni ishga tushirish."""
+    port = int(os.getenv("PORT", 8080))
+    app = web.Application()
+    app.router.add_get("/", handle_health_check)
+    app.router.add_get("/health", handle_health_check)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    logger.info(f"Render HTTP Health Check server {port}-portda faollashtirildi.")
 
 
 async def main():
@@ -101,6 +125,12 @@ async def main():
         return
 
     await bot.delete_webhook(drop_pending_updates=True)
+
+    # Render HTTP serverini ishga tushirish
+    try:
+        await run_http_server()
+    except Exception as e:
+        logger.warning(f"HTTP serverni ishga tushirishda ogohlantirish: {e}")
 
     # Pollingni boshlash
     try:

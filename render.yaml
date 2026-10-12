@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: orzular-xaritasi-bot
+    runtime: python
+    plan: free
+    region: frankfurt
+    buildCommand: pip install -r requirements.txt
+    startCommand: python run.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_MODEL_TEXT
+        value: gpt-4o-mini
+      - key: OPENAI_MODEL_IMAGE
+        value: dall-e-3
+      - key: DEFAULT_IMAGE_SIZE
+        value: 1792x1024
+      - key: LOG_LEVEL
+        value: INFO
